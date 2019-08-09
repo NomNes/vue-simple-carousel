@@ -1,0 +1,44 @@
+{
+  "name": "vue-simple-carousel",
+  "version": "0.1.0",
+  "main": "dist/index.umd.js",
+  "module": "dist/index.common.js",
+  "unpkg": "dist/index.umd.min.js",
+  "scripts": {
+    "build": "vue-cli-service build --target lib --name VueSimpleCarousel",
+    "lint": "vue-cli-service lint"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NomNes/vue-simple-carousel.git"
+  },
+  "bugs": {
+    "url": "https://github.com/NomNes/vue-simple-carousel/issues"
+  },
+  "homepage": "https://github.com/NomNes/vue-simple-carousel#readme",
+  "author": "nomnes <nomnes1990@gmail.com>",
+  "dependencies": {
+    "core-js": "^2.6.5",
+    "vue": "^2.6.10",
+    "vue-class-component": "^7.0.2",
+    "vue-property-decorator": "^8.1.0"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^3.10.0",
+    "@vue/cli-plugin-eslint": "^3.10.0",
+    "@vue/cli-plugin-typescript": "^3.10.0",
+    "@vue/cli-service": "^3.10.0",
+    "@vue/eslint-config-standard": "^4.0.0",
+    "@vue/eslint-config-typescript": "^4.0.0",
+    "babel-eslint": "^10.0.1",
+    "babel-loader": "^8.0.6",
+    "eslint": "^5.16.0",
+    "eslint-plugin-vue": "^5.0.0",
+    "pug": "^2.0.4",
+    "pug-plain-loader": "^1.0.0",
+    "stylus": "^0.54.5",
+    "stylus-loader": "^3.0.2",
+    "typescript": "^3.4.3",
+    "vue-template-compiler": "^2.6.10"
+  }
+}
