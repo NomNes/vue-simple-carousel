@@ -1,12 +1,12 @@
 {
   "name": "vue-simple-carousel",
   "version": "0.1.0",
-  "main": "dist/index.umd.js",
-  "module": "dist/index.common.js",
-  "unpkg": "dist/index.umd.min.js",
+  "main": "dist/vue-simple-carousel.common.js",
+  "module": "dist/vue-simple-carousel.esm.js",
+  "unpkg": "dist/vue-simple-carousel.js",
+  "jsdelivr": "dist/vue-simple-carousel.js",
   "scripts": {
-    "build": "vue-cli-service build --target lib --name VueSimpleCarousel",
-    "lint": "vue-cli-service lint"
+    "build": "rollup -c --environment BUILD:production"
   },
   "repository": {
     "type": "git",
@@ -16,29 +16,29 @@
     "url": "https://github.com/NomNes/vue-simple-carousel/issues"
   },
   "homepage": "https://github.com/NomNes/vue-simple-carousel#readme",
-  "author": "nomnes <nomnes1990@gmail.com>",
+  "author": {
+    "name": "nomnes"
+  },
+  "typings": "types/index.d.ts",
+  "files": [
+    "dist",
+    "types"
+  ],
   "dependencies": {
     "core-js": "^2.6.5",
     "vue": "^2.6.10",
     "vue-class-component": "^7.0.2",
-    "vue-property-decorator": "^8.1.0"
+    "vue-property-decorator": "^8.2.1"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^3.10.0",
-    "@vue/cli-plugin-eslint": "^3.10.0",
-    "@vue/cli-plugin-typescript": "^3.10.0",
-    "@vue/cli-service": "^3.10.0",
-    "@vue/eslint-config-standard": "^4.0.0",
-    "@vue/eslint-config-typescript": "^4.0.0",
-    "babel-eslint": "^10.0.1",
-    "babel-loader": "^8.0.6",
-    "eslint": "^5.16.0",
-    "eslint-plugin-vue": "^5.0.0",
-    "pug": "^2.0.4",
-    "pug-plain-loader": "^1.0.0",
-    "stylus": "^0.54.5",
-    "stylus-loader": "^3.0.2",
-    "typescript": "^3.4.3",
+    "rollup": "^1.19.4",
+    "rollup-plugin-buble": "^0.19.8",
+    "rollup-plugin-commonjs": "^10.0.2",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-replace": "^2.2.0",
+    "rollup-plugin-typescript2": "^0.22.1",
+    "rollup-plugin-vue": "^5.0.1",
+    "typescript": "^3.5.3",
     "vue-template-compiler": "^2.6.10"
   }
 }
