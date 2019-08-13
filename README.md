@@ -2,10 +2,12 @@
 Simple carousel slider for Vue.js
 
 ## Installation
-`npm install vue-simple-slider`
+```
+npm install vue-simple-slider
+```
 
 ## Usage
-```vue
+```html
 <template>
     <simple-carousel-container loop>
         <simple-carousel-item>

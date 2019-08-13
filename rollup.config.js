@@ -22,16 +22,20 @@ export default [
   },
   {
     file: `dist/${name}.common.js`,
-    format: 'cjs'
+    format: 'cjs',
+    vue: { template: { optimizeSSR: true } },
+    external: ['vue']
   },
   {
     file: `dist/${name}.esm.js`,
-    format: 'esm'
+    format: 'esm',
+    external: ['vue']
   },
   {
     file: `dist/${name}.esm.browser.min.js`,
     format: 'es',
-    transpile: false
+    transpile: false,
+    external: ['vue']
   }
 ].map(genConfig)
 
@@ -46,7 +50,7 @@ function genConfig(opts) {
         clean: true,
         useTsconfigDeclarationDir: true,
       }),
-      vue(),
+      vue(opts.vue),
       replace({
         __VERSION__: version
       })
@@ -56,7 +60,8 @@ function genConfig(opts) {
       format: opts.format,
       banner,
       name: 'VueSimpleCarousel'
-    }
+    },
+    external: opts.external
   }
 
   if (opts.transpile !== false) {
