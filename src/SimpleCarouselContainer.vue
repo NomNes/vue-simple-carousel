@@ -3,7 +3,7 @@
         .vsc-scroller(@touchstart="touchStart")
             .vsc-items(:style="{width: `${itemsLength * 100}%`}" ref="items" :class="{moving}")
                 slot
-        .vsc-controls
+        .vsc-controls(v-if="itemsLength < 2")
             .arrow.prev(v-if="hasPrev" @click="setCurrentIndex(currentIndex - 1)") &larr;
             .vsc-points
                 .vsc-point(v-for="point in points" :key="point" :class="{current: currentIndex === point}" @click="setCurrentIndex(point)")
