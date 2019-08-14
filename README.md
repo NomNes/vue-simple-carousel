@@ -9,15 +9,9 @@ npm install vue-simple-slider
 ## Usage
 ```html
 <template>
-    <simple-carousel-container loop>
-        <simple-carousel-item>
-            <img src="image-1.jpg">
-        </simple-carousel-item>
-        <simple-carousel-item>
-            <img src="image-2.jpg">
-        </simple-carousel-item>
-        <simple-carousel-item>
-            <img src="image-3.jpg">
+    <simple-carousel-container loop :watch-it="photo">
+        <simple-carousel-item v-for="(photo, index) in photos" :key="index">
+            <img :src="photo">
         </simple-carousel-item>
     </simple-carousel-container>
 </template>
@@ -28,6 +22,15 @@ npm install vue-simple-slider
       components: {
         SimpleCarouselContainer,
         SimpleCarouselItem
+      },
+      data() {
+        return {
+          photos: [
+            'image-1.jpg',
+            'image-2.jpg',
+            'image-3.jpg',
+          ]       
+        }
       }
     };
 </script>
@@ -37,3 +40,4 @@ npm install vue-simple-slider
 Property | Type | Default | Description
 :---|:---:|:---:|:---
 **loop** | *Boolean* | *false* | Flag to make the carousel loop around when it reaches the end.
+**watch-it** | *Any* | *undefined* | Mutable property for reactivity

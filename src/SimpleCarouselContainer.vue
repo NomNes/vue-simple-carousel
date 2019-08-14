@@ -13,15 +13,22 @@
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
 
-@Component
+@Component<SimpleCarouselContainer>({
+    mounted() {
+        this.setItemsLength();
+    }
+})
 export default class SimpleCarouselContainer extends Vue {
   @Prop({ type: Boolean }) loop!: boolean;
+  @Prop() watchIt!: any;
+
+  itemsLength = 0;
 
   public currentIndex = 0;
   public moving = false;
 
-  get itemsLength () {
-    return this.$slots.default && this.$slots.default.length ? this.$slots.default.length : 0
+  setItemsLength () {
+      this.itemsLength = this.$slots.default && this.$slots.default.length ? this.$slots.default.length : 0;
   }
 
   get points () {
@@ -56,6 +63,11 @@ export default class SimpleCarouselContainer extends Vue {
 
   touchStart () {
 
+  }
+
+  @Watch('watchIt')
+  onWatchChange() {
+      this.setItemsLength();
   }
 
   @Watch('currentIndex')
