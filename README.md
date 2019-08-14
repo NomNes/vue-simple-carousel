@@ -9,7 +9,7 @@ npm install vue-simple-slider
 ## Usage
 ```html
 <template>
-    <simple-carousel-container loop :watch-it="photo">
+    <simple-carousel-container loop :watch-it="photos">
         <simple-carousel-item v-for="(photo, index) in photos" :key="index">
             <img :src="photo">
         </simple-carousel-item>
