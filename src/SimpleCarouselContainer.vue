@@ -16,6 +16,18 @@ import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
 @Component<SimpleCarouselContainer>({
     mounted() {
         this.setItemsLength();
+        // @ts-ignore
+        if (process.browser) {
+            document.addEventListener("touchmove", this.touchMove.bind(this));
+            document.addEventListener("touchend", this.touchEnd.bind(this));
+        }
+    },
+    beforeDestroy() {
+        // @ts-ignore
+        if (process.browser) {
+            document.removeEventListener("touchmove", this.touchMove.bind(this));
+            document.removeEventListener("touchend", this.touchEnd.bind(this));
+        }
     }
 })
 export default class SimpleCarouselContainer extends Vue {
@@ -61,8 +73,31 @@ export default class SimpleCarouselContainer extends Vue {
     }
   }
 
-  touchStart () {
-
+  initTouchX: false | number = false;
+  endTouchX: false | number = false;
+  touchStart (event: TouchEvent) {
+    if (event.touches && event.touches.length) {
+      this.initTouchX = event.touches[0].clientX;
+    }
+  }
+  touchEnd () {
+    if (this.initTouchX !== false && this.endTouchX !== false) {
+        const delta = this.initTouchX - this.endTouchX;
+        if (Math.abs(delta) > 80) {
+          if (delta < 0) {
+              this.setCurrentIndex(this.currentIndex - 1)
+          } else {
+              this.setCurrentIndex(this.currentIndex + 1)
+          }
+        }
+    }
+    this.initTouchX = false;
+    this.endTouchX = false;
+  }
+  touchMove (event: TouchEvent) {
+      if (this.initTouchX !== false && event.touches && event.touches.length) {
+          this.endTouchX = event.touches[0].clientX;
+      }
   }
 
   @Watch('watchIt')
