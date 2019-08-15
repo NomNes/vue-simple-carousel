@@ -132,13 +132,15 @@ export default class SimpleCarouselContainer extends Vue {
       setTimeout(() => {
         // @ts-ignore
         this.$refs.items.style.transition = '.2s'
-        // @ts-ignore
-        this.$refs.items.style.marginLeft = '0'
         setTimeout(() => {
           // @ts-ignore
-          this.$refs.items.style.transition = '0s'
-          this.moving = false
-        }, 200)
+          this.$refs.items.style.marginLeft = '0'
+          setTimeout(() => {
+            // @ts-ignore
+            this.$refs.items.style.transition = '0s'
+            this.moving = false
+          }, 200)
+        })
       })
     }
   }
