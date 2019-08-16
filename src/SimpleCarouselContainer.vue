@@ -140,8 +140,8 @@ export default class SimpleCarouselContainer extends Vue {
             this.$refs.items.style.transition = '0s'
             this.moving = false
           }, 200)
-        })
-      })
+        }, 50)
+      }, 30)
     }
   }
 }
