@@ -40,7 +40,7 @@ export default class SimpleCarouselContainer extends Vue {
   public moving = false;
 
   setItemsLength () {
-      this.itemsLength = this.$slots.default && this.$slots.default.length ? this.$slots.default.length : 0;
+      this.itemsLength = this.$slots.default && this.$slots.default.length ? this.$slots.default.filter(s => s.tag).length : 0;
   }
 
   get points () {
