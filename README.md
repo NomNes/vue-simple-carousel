@@ -36,8 +36,20 @@ npm install vue-simple-slider
 </script>
 ```
 
-### Configuration
-Property | Type | Default | Description
+### SimpleCarouselContainer props
+Attribute | Type | Default | Description
 :---|:---:|:---:|:---
 **loop** | *Boolean* | *false* | Flag to make the carousel loop around when it reaches the end.
 **watch-it** | *Any* | *undefined* | Mutable property for reactivity
+
+### SimpleCarouselContainer methods
+Method Name | Description | Parameter
+:---|:---|:---:
+**next** | Next slide | -
+**previous** | Previous slide | -
+**setCurrentIndex** | Set current slide | Slide index `Number`
+
+### SimpleCarouselContainer events
+Event name | Description | Parameter
+:---|:---|:---:
+**change** | Emitted when current index changed | Current index `Number`
