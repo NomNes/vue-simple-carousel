@@ -4,10 +4,10 @@
             .vsc-items(:style="{width: `${itemsLength * 100}%`}" ref="items" :class="{moving}")
                 slot
         .vsc-controls(v-if="itemsLength > 1")
-            .arrow.prev(v-if="hasPrev" @click="previous") &larr;
+            .arrow.prev(:class="{disabled: !hasPrev}" @click="previous") &larr;
             .vsc-points
                 .vsc-point(v-for="point in points" :key="point" :class="{current: currentIndex === point}" @click="setCurrentIndex(point)")
-            .arrow.next(v-if="hasNext" @click="next") &rarr;
+            .arrow.next(:class="{disabled: !hasNext}" @click="next") &rarr;
 </template>
 
 <script lang="ts">
@@ -55,10 +55,14 @@ export default class SimpleCarouselContainer extends Vue {
   }
 
   public previous () {
-    this.setCurrentIndex(this.currentIndex - 1)
+    if (this.hasPrev) {
+      this.setCurrentIndex(this.currentIndex - 1)
+    }
   }
   public next () {
-    this.setCurrentIndex(this.currentIndex + 1)
+    if (this.hasNext) {
+      this.setCurrentIndex(this.currentIndex + 1)
+    }
   }
 
   setCurrentIndex (index: number) {
