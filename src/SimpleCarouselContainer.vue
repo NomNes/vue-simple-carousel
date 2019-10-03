@@ -196,4 +196,7 @@ export default class SimpleCarouselContainer extends Vue {
                     border 1px solid #000
                     &.current
                         background #000
+          .arrow
+            &.disabled
+              display none
 </style>
