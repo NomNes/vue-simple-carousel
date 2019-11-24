@@ -1,7 +1,7 @@
 <template lang="pug">
     .vue-simple-carousel-container
         .vsc-scroller(@touchstart="touchStart")
-            .vsc-items(:style="{width: `${itemsLength * 100}%`}" ref="items" :class="{moving}")
+            .vsc-items(:style="{width: `${itemsLength * (100 / itemsOnScreen)}%`}" ref="items" :class="{moving}")
                 slot
         .vsc-controls(v-if="itemsLength > 1")
             .arrow.prev(:class="{disabled: !hasPrev}" @click="previous") &larr;
@@ -33,6 +33,7 @@ import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
 export default class SimpleCarouselContainer extends Vue {
   @Prop({ type: Boolean }) loop!: boolean;
   @Prop() watchIt!: any;
+  @Prop({ type: Number, default: 1 }) itemsOnScreen!: number
 
   itemsLength = 0;
 
@@ -40,15 +41,15 @@ export default class SimpleCarouselContainer extends Vue {
   public moving = false;
 
   setItemsLength () {
-      this.itemsLength = this.$slots.default && this.$slots.default.length ? this.$slots.default.filter(s => s.tag).length : 0;
+      this.itemsLength = this.$slots.default && this.$slots.default.length ? this.$slots.default.filter(s => s.tag).length : 0
   }
 
   get points () {
-      return Array.from(Array(this.itemsLength).keys())
+      return Array.from(Array(this.itemsLength - this.itemsOnScreen + 1).keys())
   }
 
   get hasNext () {
-    return this.loop || this.currentIndex + 1 < this.itemsLength
+    return this.loop || this.currentIndex + 1 < this.points.length
   }
   get hasPrev () {
     return this.loop || this.currentIndex > 0
@@ -122,11 +123,12 @@ export default class SimpleCarouselContainer extends Vue {
     let delta = nextIndex - previousIndex
     if (this.loop && Math.abs(this.itemsLength / delta) < 2) delta = (this.itemsLength - Math.abs(delta)) * (delta > 0 ? -1 : 1)
     this.$emit('change', nextIndex)
+    const itemWidth = 100 / this.itemsOnScreen
     if (delta > 0) {
       // @ts-ignore
       this.$refs.items.style.transition = '.2s'
       // @ts-ignore
-      this.$refs.items.style.marginLeft = `${-100 * delta}%`
+      this.$refs.items.style.marginLeft = `${-itemWidth * delta}%`
       setTimeout(() => {
         // @ts-ignore
         this.$refs.items.style.transition = '0s'
@@ -140,7 +142,7 @@ export default class SimpleCarouselContainer extends Vue {
     } else {
       this.updateOrder(nextIndex)
       // @ts-ignore
-      this.$refs.items.style.marginLeft = `${100 * delta}%`
+      this.$refs.items.style.marginLeft = `${itemWidth * delta}%`
       setTimeout(() => {
         // @ts-ignore
         this.$refs.items.style.transition = '.2s'
