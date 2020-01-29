@@ -4,10 +4,14 @@
             .vsc-items(:style="{width: `${itemsLength * (100 / itemsOnScreen)}%`}" ref="items" :class="{moving}")
                 slot
         .vsc-controls(v-if="itemsLength > 1")
-            .arrow.prev(:class="{disabled: !hasPrev}" @click="previous") &larr;
+            .arrow.prev(:class="{disabled: !hasPrev}" @click="previous")
+              slot(name="arrow-prev")
+                | &larr;
             .vsc-points
                 .vsc-point(v-for="point in points" :key="point" :class="{current: currentIndex === point}" @click="setCurrentIndex(point)")
-            .arrow.next(:class="{disabled: !hasNext}" @click="next") &rarr;
+            .arrow.next(:class="{disabled: !hasNext}" @click="next")
+              slot(name="arrow-next")
+                | &rarr;
 </template>
 
 <script lang="ts">
