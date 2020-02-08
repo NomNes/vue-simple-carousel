@@ -136,10 +136,10 @@ export default class SimpleCarouselContainer extends Vue {
       setTimeout(() => {
         // @ts-ignore
         this.$refs.items.style.transition = '0s'
-        this.updateOrder(nextIndex)
         setTimeout(() => {
           // @ts-ignore
           this.$refs.items.style.marginLeft = '0'
+          this.updateOrder(nextIndex)
           this.moving = false
         })
       }, 200)
@@ -167,42 +167,44 @@ export default class SimpleCarouselContainer extends Vue {
 
 <style lang="stylus">
     .vue-simple-carousel-container
-        width 100%
-        .vsc-scroller
-            overflow hidden
-            .vsc-items
-                display flex
-                .vue-simple-carousel-item
-                    width 100%
-                &.moving
-                    .vue-simple-carousel-item
-                        position relative
-                        &::before
-                            content ""
-                            position absolute
-                            top 0
-                            left 0
-                            width 100%
-                            height 100%
-                            z-index 1
-        .vsc-controls
-            display flex
-            justify-content space-between
-            align-items center
-            user-select none
-            .vsc-points
-                display flex
-                justify-content center
-                flex-wrap nowrap
-                .vsc-point
-                    width 10px
-                    height 10px
-                    border-radius 50%
-                    margin 2px
-                    border 1px solid #000
-                    &.current
-                        background #000
-          .arrow
-            &.disabled
-              display none
+      width 100%
+      .vsc-scroller
+        overflow hidden
+        .vsc-items
+          display flex
+          min-width 100%
+          .vue-simple-carousel-item
+            width 100%
+            min-width 100vw
+          &.moving
+            .vue-simple-carousel-item
+              position relative
+              &::before
+                content ""
+                position absolute
+                top 0
+                left 0
+                width 100%
+                height 100%
+                z-index 1
+      .vsc-controls
+        display flex
+        justify-content space-between
+        align-items center
+        user-select none
+        .vsc-points
+          display flex
+          justify-content center
+          flex-wrap nowrap
+          .vsc-point
+            width 10px
+            height 10px
+            border-radius 50%
+            margin 2px
+            border 1px solid #000
+            &.current
+              background #000
+        .arrow
+          &.disabled
+            display none
 </style>
