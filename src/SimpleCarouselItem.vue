@@ -1,6 +1,7 @@
-<template lang="pug">
-    .vue-simple-carousel-item(:style="{width: `${100 / itemsOnScreen}%`}")
-        slot
+<template>
+  <div class="vue-simple-carousel-item" :style="{width: `${100 / itemsOnScreen}%`}">
+    <slot/>
+  </div>
 </template>
 
 <script lang="ts">
@@ -19,12 +20,12 @@ import { Component, Vue } from 'vue-property-decorator'
       }
       parent = parent.$parent
     }
-  }
+  },
 })
 export default class SimpleCarouselItem extends Vue {
   parent: Vue | null = null
 
-  get itemsOnScreen () {
+  get itemsOnScreen() {
     // @ts-ignore
     return this.parent ? this.parent.itemsOnScreen : 1
   }

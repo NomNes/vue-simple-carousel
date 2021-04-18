@@ -1,83 +1,91 @@
-<template lang="pug">
-    .vue-simple-carousel-container
-        .vsc-scroller(@touchstart="touchStart")
-            .vsc-items(:style="{width: `${itemsLength * (100 / itemsOnScreen)}%`}" ref="items" :class="{moving}")
-                slot
-        .vsc-controls(v-if="itemsLength > 1")
-            .arrow.prev(:class="{disabled: !hasPrev}" @click="previous")
-              slot(name="arrow-prev")
-                | &larr;
-            .vsc-points
-                .vsc-point(v-for="point in points" :key="point" :class="{current: currentIndex === point}" @click="setCurrentIndex(point)")
-            .arrow.next(:class="{disabled: !hasNext}" @click="next")
-              slot(name="arrow-next")
-                | &rarr;
+<template>
+  <div class="vue-simple-carousel-container">
+    <div class="vsc-scroller" @touchstart="touchStart">
+      <div class="vsc-items" :style="{width: `${itemsLength * (100 / itemsOnScreen)}%`}" ref="items" :class="{moving}">
+        <slot/>
+      </div>
+    </div>
+    <div class="vsc-controls" v-if="itemsLength > 1">
+      <div :class="['arrow', 'prev', { disabled: !hasPrev }]" @click="previous">
+        <slot name="arrow-prev">&larr;</slot>
+      </div>
+      <div class="vsc-points">
+        <div :class="['vsc-point', { current: currentIndex === point }]" v-for="point in points" :key="point"
+             @click="setCurrentIndex(point)"/>
+      </div>
+      <div :class="['arrow', 'next', { disabled: !hasNext }]" @click="next">
+        <slot name="arrow-next">&rarr;</slot>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
 
 @Component<SimpleCarouselContainer>({
-    mounted() {
-        this.setItemsLength();
-        // @ts-ignore
-        if (process.browser) {
-            document.addEventListener("touchmove", this.touchMove.bind(this));
-            document.addEventListener("touchend", this.touchEnd.bind(this));
-        }
-    },
-    beforeDestroy() {
-        // @ts-ignore
-        if (process.browser) {
-            document.removeEventListener("touchmove", this.touchMove.bind(this));
-            document.removeEventListener("touchend", this.touchEnd.bind(this));
-        }
+  mounted() {
+    this.setItemsLength()
+    // @ts-ignore
+    if (process.browser) {
+      document.addEventListener('touchmove', this.touchMove.bind(this))
+      document.addEventListener('touchend', this.touchEnd.bind(this))
     }
+  },
+  beforeDestroy() {
+    // @ts-ignore
+    if (process.browser) {
+      document.removeEventListener('touchmove', this.touchMove.bind(this))
+      document.removeEventListener('touchend', this.touchEnd.bind(this))
+    }
+  },
 })
 export default class SimpleCarouselContainer extends Vue {
-  @Prop({ type: Boolean }) loop!: boolean;
-  @Prop() watchIt!: any;
+  @Prop({ type: Boolean }) loop!: boolean
+  @Prop() watchIt!: any
   @Prop({ type: Number, default: 1 }) itemsOnScreen!: number
 
-  itemsLength = 0;
+  itemsLength = 0
 
-  public currentIndex = 0;
-  public moving = false;
+  public currentIndex = 0
+  public moving = false
 
-  setItemsLength () {
-      this.itemsLength = this.$slots.default && this.$slots.default.length ? this.$slots.default.filter(s => s.tag).length : 0
+  setItemsLength() {
+    this.itemsLength = this.$slots.default && this.$slots.default.length ? this.$slots.default.filter(s => s.tag).length : 0
   }
 
-  get points () {
-      return Array.from(Array(this.itemsLength - this.itemsOnScreen + 1).keys())
+  get points() {
+    return Array.from(Array(this.itemsLength - this.itemsOnScreen + 1).keys())
   }
 
-  get hasNext () {
+  get hasNext() {
     return this.loop || this.currentIndex + 1 < this.points.length
   }
-  get hasPrev () {
+
+  get hasPrev() {
     return this.loop || this.currentIndex > 0
   }
 
-  public previous () {
+  public previous() {
     if (this.hasPrev) {
       this.setCurrentIndex(this.currentIndex - 1)
     }
   }
-  public next () {
+
+  public next() {
     if (this.hasNext) {
       this.setCurrentIndex(this.currentIndex + 1)
     }
   }
 
-  setCurrentIndex (index: number) {
+  setCurrentIndex(index: number) {
     if (this.moving) return false
     if (index < 0) index = this.loop ? this.itemsLength - 1 : 0
     if (this.itemsLength < index + 1) index = this.loop ? 0 : this.itemsLength - 1
     this.currentIndex = index
   }
 
-  updateOrder (index: number) {
+  updateOrder(index: number) {
     for (let i = 0; i < this.itemsLength; i++) {
       if (i >= index) {
         // @ts-ignore
@@ -89,40 +97,43 @@ export default class SimpleCarouselContainer extends Vue {
     }
   }
 
-  initTouchX: false | number = false;
-  endTouchX: false | number = false;
-  touchStart (event: TouchEvent) {
+  initTouchX: false | number = false
+  endTouchX: false | number = false
+
+  touchStart(event: TouchEvent) {
     if (event.touches && event.touches.length) {
-      this.initTouchX = event.touches[0].clientX;
+      this.initTouchX = event.touches[0].clientX
     }
   }
-  touchEnd () {
+
+  touchEnd() {
     if (this.initTouchX !== false && this.endTouchX !== false) {
-        const delta = this.initTouchX - this.endTouchX;
-        if (Math.abs(delta) > 80) {
-          if (delta < 0) {
-              this.setCurrentIndex(this.currentIndex - 1)
-          } else {
-              this.setCurrentIndex(this.currentIndex + 1)
-          }
+      const delta = this.initTouchX - this.endTouchX
+      if (Math.abs(delta) > 80) {
+        if (delta < 0) {
+          this.setCurrentIndex(this.currentIndex - 1)
+        } else {
+          this.setCurrentIndex(this.currentIndex + 1)
         }
-    }
-    this.initTouchX = false;
-    this.endTouchX = false;
-  }
-  touchMove (event: TouchEvent) {
-      if (this.initTouchX !== false && event.touches && event.touches.length) {
-          this.endTouchX = event.touches[0].clientX;
       }
+    }
+    this.initTouchX = false
+    this.endTouchX = false
+  }
+
+  touchMove(event: TouchEvent) {
+    if (this.initTouchX !== false && event.touches && event.touches.length) {
+      this.endTouchX = event.touches[0].clientX
+    }
   }
 
   @Watch('watchIt')
   onWatchChange() {
-      this.setItemsLength();
+    this.setItemsLength()
   }
 
   @Watch('currentIndex')
-  onCurrentIndexChange (nextIndex: number, previousIndex: number) {
+  onCurrentIndexChange(nextIndex: number, previousIndex: number) {
     this.moving = true
     let delta = nextIndex - previousIndex
     if (this.loop && Math.abs(this.itemsLength / delta) < 2) delta = (this.itemsLength - Math.abs(delta)) * (delta > 0 ? -1 : 1)
@@ -166,45 +177,45 @@ export default class SimpleCarouselContainer extends Vue {
 </script>
 
 <style lang="stylus">
-    .vue-simple-carousel-container
-      width 100%
-      .vsc-scroller
-        overflow hidden
-        .vsc-items
-          display flex
-          min-width 100%
-          .vue-simple-carousel-item
+.vue-simple-carousel-container
+  width 100%
+  .vsc-scroller
+    overflow hidden
+    .vsc-items
+      display flex
+      min-width 100%
+      .vue-simple-carousel-item
+        width 100%
+        min-width 100vw
+      &.moving
+        .vue-simple-carousel-item
+          position relative
+          &::before
+            content ""
+            position absolute
+            top 0
+            left 0
             width 100%
-            min-width 100vw
-          &.moving
-            .vue-simple-carousel-item
-              position relative
-              &::before
-                content ""
-                position absolute
-                top 0
-                left 0
-                width 100%
-                height 100%
-                z-index 1
-      .vsc-controls
-        display flex
-        justify-content space-between
-        align-items center
-        user-select none
-        .vsc-points
-          display flex
-          justify-content center
-          flex-wrap nowrap
-          .vsc-point
-            width 10px
-            height 10px
-            border-radius 50%
-            margin 2px
-            border 1px solid #000
-            &.current
-              background #000
-        .arrow
-          &.disabled
-            display none
+            height 100%
+            z-index 1
+  .vsc-controls
+    display flex
+    justify-content space-between
+    align-items center
+    user-select none
+    .vsc-points
+      display flex
+      justify-content center
+      flex-wrap nowrap
+      .vsc-point
+        width 10px
+        height 10px
+        border-radius 50%
+        margin 2px
+        border 1px solid #000
+        &.current
+          background #000
+    .arrow
+      &.disabled
+        display none
 </style>
