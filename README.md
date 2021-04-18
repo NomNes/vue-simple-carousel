@@ -3,7 +3,7 @@ Simple carousel slider for Vue.js
 
 ## Installation
 ```
-npm install vue-simple-slider
+npm install vue-simple-carousel
 ```
 
 ## Usage
