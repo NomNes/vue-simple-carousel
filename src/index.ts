@@ -1,4 +1,3 @@
-import SimpleCarouselContainer from './SimpleCarouselContainer.vue'
-import SimpleCarouselItem from './SimpleCarouselItem.vue'
+import SimpleCarousel from './SimpleCarousel.vue'
 
-export {SimpleCarouselContainer, SimpleCarouselItem}
+export default SimpleCarousel
