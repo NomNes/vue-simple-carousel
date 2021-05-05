@@ -154,6 +154,7 @@ export default Vue.extend({
         transform: `translateX(${this.dragging ? this.dragTranslate : this.sliderTranslate}%)`,
         transition: this.dragging ? '' : '.5s all ease',
         alignItems: this.adjustable ? 'flex-start' : 'stretch',
+        justifyContent: this.maxIndex ? 'flex-start' : 'center',
       }
     },
     maxOnScreen(): number {
@@ -170,7 +171,11 @@ export default Vue.extend({
       return this.current < this.maxIndex
     },
     maxIndex(): number {
-      return this.items.length - this.currentPerPage
+      let max = this.items.length - this.currentPerPage
+      if (max < 0) {
+        max = 0
+      }
+      return max
     },
     pagesCount(): number {
       if (this.slideByItem) {
